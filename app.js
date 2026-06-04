@@ -183,104 +183,66 @@ function countdown(ms) {
   return `${pad(m)}:${pad(s)}`;
 }
 
-// Sıralanmış reyslərdən əvvəlki və növbəti iki reysi çıxar.
-function prevAndNext(departures, nowMs) {
-  let prev = null;
-  let i = 0;
-  for (; i < departures.length; i++) {
-    if (departures[i].ts > nowMs) break;
-    prev = departures[i];
-  }
-  return { prev, next: departures.slice(i, i + 2) };
-}
-
 /* --- DOM ----------------------------------------------------- */
-
-const RING_LEN = 100; // pathLength="100" — faiz kimi işləyir
 
 const el = {
   clock: document.getElementById("baku-clock"),
   dayType: document.getElementById("day-type"),
   cards: {
-    ahmedli: cardRefs("ahmedli"),
-    hazi: cardRefs("hazi"),
+    ahmedli: {
+      big: document.getElementById("ahmedli-big"),
+      next: document.getElementById("ahmedli-next"),
+      after: document.getElementById("ahmedli-after"),
+      card: document.getElementById("card-ahmedli"),
+    },
+    hazi: {
+      big: document.getElementById("hazi-big"),
+      next: document.getElementById("hazi-next"),
+      after: document.getElementById("hazi-after"),
+      card: document.getElementById("card-hazi"),
+    },
   },
 };
-
-function cardRefs(id) {
-  return {
-    card: document.getElementById("card-" + id),
-    big: document.getElementById(id + "-big"),
-    clock: document.getElementById(id + "-clock"),
-    after: document.getElementById(id + "-after"),
-    status: document.getElementById(id + "-status"),
-    ring: document.getElementById(id + "-ring"),
-  };
-}
 
 function render() {
   const now = bakuNow();
   const nowMs = now.getTime();
 
+  // Başlıq: Bakı saatı
   el.clock.textContent =
     pad(now.getUTCHours()) + ":" + pad(now.getUTCMinutes()) + ":" + pad(now.getUTCSeconds());
 
-  const ahmedli = prevAndNext(allDepartures(SCHEDULE.ahmedli), nowMs);
-  const hazi = prevAndNext(allDepartures(SCHEDULE.hazi), nowMs);
+  // Hər stansiya öz cədvəli ilə müstəqil hesablanır
+  const ahmedli = nextN(allDepartures(SCHEDULE.ahmedli), nowMs, 2);
+  const hazi = nextN(allDepartures(SCHEDULE.hazi), nowMs, 2);
 
-  // Gün tipi — ən yaxın reysin xidmət gününə görə
-  const ref = hazi.next[0] || ahmedli.next[0];
-  if (ref) el.dayType.textContent = ref.weekend ? "İstirahət günü" : "İş günü";
+  // Gün tipini ən yaxın reysin xidmət gününə görə göstər
+  const ref = ahmedli[0] || hazi[0];
+  if (ref) {
+    el.dayType.textContent = ref.weekend ? "İstirahət günü" : "İş günü";
+  }
 
   updateCard(el.cards.ahmedli, ahmedli, nowMs);
   updateCard(el.cards.hazi, hazi, nowMs);
 }
 
-function updateCard(c, data, nowMs) {
-  const first = data.next[0];
-
-  if (!first) {
-    c.big.textContent = "—";
-    c.clock.textContent = "";
-    c.after.textContent = "Növbəti reys yoxdur";
-    c.status.textContent = "";
-    setRing(c.ring, 0);
+function updateCard(card, list, nowMs) {
+  if (list.length === 0) {
+    card.big.textContent = "—";
+    card.next.textContent = "Növbəti reys yoxdur";
+    card.after.textContent = "";
     return;
   }
 
+  const first = list[0];
   const remaining = first.ts - nowMs;
-  const remSec = Math.round(remaining / 1000);
+  card.big.textContent = countdown(remaining);
+  card.next.textContent = clockHM(first.ts);
 
-  c.big.textContent = countdown(remaining);
-  c.clock.textContent = clockHM(first.ts);
-  c.after.textContent = data.next[1] ? "sonra " + clockHM(data.next[1].ts) : "";
+  // Uzun gecə fasiləsi (30 dəqiqədən çox) — solğunlaşdır
+  card.card.classList.toggle("waiting", remaining > 30 * 60000);
 
-  // İnterval: əvvəlki reysdən növbətiyə qədər (ring üçün baza)
-  const interval = data.prev ? first.ts - data.prev.ts : remaining;
-  const frac = Math.max(0, Math.min(1, interval > 0 ? remaining / interval : 0));
-  setRing(c.ring, frac * RING_LEN);
-
-  // Vəziyyət rəngləri / mətn
-  const waiting = remaining > 30 * 60000;
-  const arriving = remSec <= 60;
-  const soon = !arriving && remSec <= 180;
-
-  c.card.classList.toggle("is-waiting", waiting);
-  c.card.classList.toggle("is-arrive", arriving && !waiting);
-  c.card.classList.toggle("is-soon", soon && !waiting);
-
-  c.status.textContent = waiting
-    ? "fasilə"
-    : arriving
-    ? "qatar gəlir"
-    : soon
-    ? "yaxınlaşır"
-    : "yola düşür";
-}
-
-// Ring qövsünü təyin et (qalan vaxt qədər dolu görünür)
-function setRing(ring, shown) {
-  if (ring) ring.setAttribute("stroke-dashoffset", String(RING_LEN - shown));
+  card.after.textContent = list[1] ? "Sonra: " + clockHM(list[1].ts) : "";
 }
 
 // Hər ¼ saniyə yenilə (geri sayım rəvan getsin)
