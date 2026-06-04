@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0e1116" />
+  <meta name="description" content="Bakı metrosu — Əhmədli ⇄ Həzi Aslanov məkik qatarının növbəti çatma vaxtı, Bakı vaxtına görə." />
+  <title>Əhmədli ⇄ Həzi Aslanov · Qatar vaxtı</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      Əhmədli ⇄ Həzi Aslanov
+    </div>
+    <div class="now">
+      <span id="day-type">—</span>
+      <span class="sep">·</span>
+      Bakı <strong id="baku-clock">--:--:--</strong>
+    </div>
+  </header>
+
+  <main class="stations">
+    <section class="card" id="card-ahmedli">
+      <div class="card-inner">
+        <div class="station-name">Əhmədli</div>
+        <div class="card-label">qatar yola düşür</div>
+        <div class="big" id="ahmedli-big">--:--</div>
+        <div class="next-line">
+          növbəti: <strong id="ahmedli-next">--:--</strong>
+        </div>
+        <div class="after-line" id="ahmedli-after"></div>
+      </div>
+    </section>
+
+    <section class="card" id="card-hazi">
+      <div class="card-inner">
+        <div class="station-name">Həzi Aslanov</div>
+        <div class="card-label">qatar çatır</div>
+        <div class="big" id="hazi-big">--:--</div>
+        <div class="next-line">
+          növbəti: <strong id="hazi-next">--:--</strong>
+        </div>
+        <div class="after-line" id="hazi-after"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    Mənbə: Əhmədlidən yola düşmə cədvəli (rəsmi) · Həzi Aslanova çatma ≈ +2 dəq
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
