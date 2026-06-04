@@ -30,6 +30,7 @@ hostingə (GitHub Pages və s.) qoyun.
 
 ## Qeyd
 
-Cədvəl rəsmi **"Əhmədlidən yola düşmə vaxtı"** məlumatına əsaslanır.
-Həzi Aslanova çatma vaxtı qonşu stansiya gediş müddəti (~2 dəq) əlavə
-edilərək hesablanır (`app.js` içində `TRAVEL_MIN`).
+Vaxtlar hər iki stansiyanın **rəsmi "yola düşmə vaxtı"** lövhələrindən
+götürülüb (`app.js` içində `SCHEDULE`). Hər stansiya öz cədvəli ilə
+müstəqil hesablanır; iş günləri intervalı saata görə dəyişir (5 ↔ 7 dəq),
+şənbə-bazar isə stabil 7 dəqiqədir.
