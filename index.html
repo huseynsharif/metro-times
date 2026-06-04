@@ -2,55 +2,76 @@
 <html lang="az">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0e1116" />
-  <meta name="description" content="Bakı metrosu — Əhmədli ⇄ Həzi Aslanov məkik qatarının növbəti çatma vaxtı, Bakı vaxtına görə." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0b0f14" />
+  <meta name="description" content="Bakı metrosu — Əhmədli ⇄ Həzi Aslanov məkik qatarının növbəti yola düşmə vaxtı, Bakı vaxtına görə." />
   <title>Əhmədli ⇄ Həzi Aslanov · Qatar vaxtı</title>
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <span class="dot"></span>
-      Əhmədli ⇄ Həzi Aslanov
+      <span class="logo">M</span>
+      <span class="brand-text">Əhmədli&nbsp;⇄&nbsp;Həzi&nbsp;Aslanov</span>
     </div>
     <div class="now">
-      <span id="day-type">—</span>
-      <span class="sep">·</span>
-      Bakı <strong id="baku-clock">--:--:--</strong>
+      <span class="day-badge" id="day-type">—</span>
+      <span class="clock" id="baku-clock">--:--:--</span>
     </div>
   </header>
 
   <main class="stations">
+    <!-- HƏZI ASLANOV -->
     <section class="card" id="card-hazi">
-      <div class="card-inner">
-        <div class="station-name">Həzi Aslanov</div>
-        <div class="card-label">qatar yola düşür</div>
-        <div class="big" id="hazi-big">--:--</div>
-        <div class="next-line">
-          növbəti: <strong id="hazi-next">--:--</strong>
-        </div>
-        <div class="after-line" id="hazi-after"></div>
+      <div class="card-head">
+        <span class="station-name">Həzi Aslanov</span>
+        <span class="status" id="hazi-status">yola düşür</span>
       </div>
+
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="ring-track" cx="50" cy="50" r="44" />
+          <circle class="ring-prog" id="hazi-ring" cx="50" cy="50" r="44"
+                  pathLength="100" stroke-dasharray="100" stroke-dashoffset="0" />
+        </svg>
+        <div class="ring-center">
+          <div class="big" id="hazi-big">--:--</div>
+          <div class="big-clock" id="hazi-clock">--:--</div>
+        </div>
+      </div>
+
+      <div class="after-line" id="hazi-after"></div>
     </section>
 
+    <div class="connector"><span>⇄</span></div>
+
+    <!-- ƏHMƏDLI -->
     <section class="card" id="card-ahmedli">
-      <div class="card-inner">
-        <div class="station-name">Əhmədli</div>
-        <div class="card-label">qatar yola düşür</div>
-        <div class="big" id="ahmedli-big">--:--</div>
-        <div class="next-line">
-          növbəti: <strong id="ahmedli-next">--:--</strong>
-        </div>
-        <div class="after-line" id="ahmedli-after"></div>
+      <div class="card-head">
+        <span class="station-name">Əhmədli</span>
+        <span class="status" id="ahmedli-status">yola düşür</span>
       </div>
+
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="ring-track" cx="50" cy="50" r="44" />
+          <circle class="ring-prog" id="ahmedli-ring" cx="50" cy="50" r="44"
+                  pathLength="100" stroke-dasharray="100" stroke-dashoffset="0" />
+        </svg>
+        <div class="ring-center">
+          <div class="big" id="ahmedli-big">--:--</div>
+          <div class="big-clock" id="ahmedli-clock">--:--</div>
+        </div>
+      </div>
+
+      <div class="after-line" id="ahmedli-after"></div>
     </section>
   </main>
 
   <footer class="foot">
-    Mənbə: hər stansiyanın rəsmi yola düşmə cədvəli · iş günləri / şənbə-bazar
+    Bakı vaxtı · rəsmi yola düşmə cədvəli (iş günləri / şənbə-bazar)
   </footer>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
